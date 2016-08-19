@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Search View </title>
+    <script src="https://npmcdn.com/react@15.3.0/dist/react-with-addons.min.js"></script>
+    <script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.min.js"></script>
+    <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <h1> We've got answers to life here! </h1>
+    <div id="content"></div>
+    <script type="text/babel">
+      var AnswerThread = React.createClass({
+        getDefaultProps: function() {
+          return {
+            title: '',
+            answer: ''
+          };
+        },
+        render: function() {
+          return (
+            <div>
+              <h3>{this.props.title}</h3>
+              <p class="markdownx-preview">{this.props.answer}</p>
+            </div>
+          );
+        }
+      });
+
+      var AnswerContainer = React.createClass({
+        getDefaultProps: function() {
+          results: []
+        },
+        renderResults: function() {
+          return this.props.results.map(function(item) {
+            return (
+              <AnswerThread title={item.title} answer={item.response} />
+            );
+          });
+        },
+        render: function() {
+          return (
+            <div> {this.renderResults()}</div>
+          );
+        }
+      });
+
+      var FAQContainer = React.createClass({
+        getInitialState: function() {
+          return {
+            query: '',
+            results: []
+          };
+        },
+        componentDidMount: function() {
+          this.getAnswers();
+        },
+        handleChange: function(event) {
+          this.setState({
+            query: event.target.value
+          });
+          this.getAnswers();
+        },
+        getAnswers: function() {
+          var urlSearch = '/search/' + this.state.query;
+          $.ajax({
+            url: urlSearch,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+              this.setState({results: data.answers});
+            }.bind(this),
+            error: function(xhr, status, err) {
+              console.error(urlSearch, status, err.toString());
+            }.bind(this)
+          });
+        },
+        render: function() {
+          return (
+            <div>
+              <input type="text" value={this.state.query} onChange={this.handleChange} placeholder="Hi, what can I help you with?"></input>
+              <AnswerContainer results={this.state.results} />
+            </div>
+          );
+        }
+      });
+
+      ReactDOM.render(
+        <FAQContainer />,
+        document.getElementById('content')
+      );
+    </script>
+
+  </body>
+</html>
