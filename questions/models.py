@@ -15,12 +15,14 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import JSONField
 from markdownx.models import MarkdownxField
 
-class Thread(models.Model):
+class Content(models.Model):
 
     class Meta:
+        abstract = True
         get_latest_by = 'last_edited'
         ordering = ['last_edited', 'title']
 
@@ -30,10 +32,40 @@ class Thread(models.Model):
 
     last_edited = models.DateField(auto_now=True)
 
+    def __str__(self):
+        return self.title
+
+
+class Thread(Content):
+
     # This field stores extra information regarding the thread. If the contents
     # inside the extra field become stable, then it is time to promote the
     # item(s) to separate fields.
-    extra = JSONField(blank=True,null=True)
+    extra = JSONField(blank=True, null=True)
+
+
+# Ensures that only one instance of a model can be created. Code from:
+# http://stackoverflow.com/a/6436008
+def validate_only_one_instance(obj):
+    model = obj.__class__
+    if (model.objects.count() > 0 and obj.id != model.objects.get().id):
+        raise ValidationError(
+            'Can only create 1 {0} instance'.format(str(model)))
+
+class FailureThread(Content):
+
+    def title_default():
+        return 'Looks like we couldn\'t find a solution :('
+
+    def response_default():
+        return 'Try again with another search term or keep typing'
+
+    def clean(self):
+        return validate_only_one_instance(self)
+
+    title = models.CharField(max_length=50, default=title_default)
+
+    response = MarkdownxField(default=response_default)
 
     def __str__(self):
-        return self.title
+        return 'Failure Message'

@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 
 from django.forms.models import model_to_dict
 
-from .models import Thread
+from .models import Thread, FailureThread
 
 class HomeView(TemplateView):
 
@@ -47,8 +47,9 @@ class SearchHandler(View):
                 ).filter(similarity__gt=0.09).order_by('-similarity')]
             if len(ret['answers']) == 0:
                 ret['answers'] = [
-                    {'title': 'Looks like we couldn\'t find a solution :(',
-                    'response': 'Try again with another search term'}]
+                    model_to_dict(FailureThread.objects.get(pk=1),
+                                  fields=('title', 'response'))
+                ]
         else:
             ret['answers'] = [
                 model_to_dict(thread, fields=('title', 'response')) for
