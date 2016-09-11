@@ -15,6 +15,7 @@
 from django.test import Client, TestCase
 
 from .models import Thread
+from .models import FailureThread
 
 class ThreadTestCase(TestCase):
     def setUp(self):
@@ -27,6 +28,7 @@ class ThreadTestCase(TestCase):
         Thread.objects.create(
             title='Explain the origins of knowledge',
             response='Ask your parents or ask your mind.')
+        FailureThread.objects.create()
 
     def test_thread_title(self):
         """String of the thread should be title of the thread object."""
@@ -44,7 +46,7 @@ class ThreadTestCase(TestCase):
 
         self.assertEqual(response.json()['answers'],
             [{'title': 'Looks like we couldn\'t find a solution :(',
-            'response': 'Try again with another search term'}])
+            'response': 'Try again with another search term or keep typing'}])
 
     def test_returns_valid_results(self):
         """JSON should contain results when there are results to return.
