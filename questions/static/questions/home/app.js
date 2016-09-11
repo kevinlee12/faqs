@@ -77,7 +77,7 @@ var FAQContainer = React.createClass({
     $.ajax({
       url: urlSearch,
       dataType: 'json',
-      cache: false,
+      cache: true,
       success: function(data) {
         this.setState({results: data.answers});
       }.bind(this),

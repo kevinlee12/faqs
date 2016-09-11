@@ -1,5 +1,4 @@
-coverage==4.2
-Django==1.10
+Django==1.10.1
 django-markdownx==1.6.2
 Markdown==2.6.6
 Pillow==3.3.0
