@@ -20,3 +20,5 @@ if __name__ == "__main__": # pragma: no cover
             )
         raise
     execute_from_command_line(sys.argv)
+
+nothing = 'test'
