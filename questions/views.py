@@ -47,7 +47,7 @@ class SearchHandler(View):
                     TrigramSimilarity('title', query),
                 ).filter(similarity__gt=0.09).order_by('-similarity')]
 
-            if len(ret['answers']) == 0:
+            if len(answers) == 0:
                 if FailureThread.objects.count():
                     answers = [
                         model_to_dict(FailureThread.objects.get(pk=1),
