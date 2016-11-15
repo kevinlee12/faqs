@@ -1,0 +1,11 @@
+[
+{
+  "model": "questions.failurethread",
+  "pk": 1,
+  "fields": {
+    "last_edited": "2016-10-16",
+    "title": "Looks like we couldn't find a solution :(",
+    "response": "Try again with another search term or keep typing...we might be able to find something for you."
+  }
+}
+]

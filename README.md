@@ -15,6 +15,7 @@ docker-compose up
 ```
 4. Close the docker containers by `Ctrl+C`.
 5. Run `docker-compose run web python manage.py migrate`
+5. Run `docker-compose run web python manage.py loaddata initial_data` (this is to load the failure thread first).
 
 ## Notes
 This application is still in very much a work in progress. If you would like to make a PR, please do! Any assistance would be very much appreciated!

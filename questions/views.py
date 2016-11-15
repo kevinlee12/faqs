@@ -37,23 +37,38 @@ class SearchHandler(View):
             'Query must be a string type or None!'
 
         ret = {'answers': []}
+        answers = []
 
         if query:
-            ret['answers'] = [
+            answers = [
                 model_to_dict(thread, fields=('title', 'response')) for thread
                 in Thread.objects.annotate(similarity=\
                     TrigramSimilarity('response', query) +
                     TrigramSimilarity('title', query),
                 ).filter(similarity__gt=0.09).order_by('-similarity')]
-            if len(ret['answers']) == 0:
-                ret['answers'] = [
-                    model_to_dict(FailureThread.objects.get(pk=1),
-                                  fields=('title', 'response'))
-                ]
-        else:
-            ret['answers'] = [
-                model_to_dict(thread, fields=('title', 'response')) for
-                thread in Thread.objects.all()
-            ]
 
+            if len(answers) == 0:
+                if FailureThread.objects.count():
+                    answers = [
+                        model_to_dict(FailureThread.objects.get(pk=1),
+                                      fields=('title', 'response'))
+                    ]
+                else:
+                    answers = [{
+                        'title': 'Tell the site admin that...',
+                        'response': 'the failure threads aren\'t loaded!'
+                    }]
+        else:
+            if Thread.objects.count():
+                answers = [
+                    model_to_dict(thread, fields=('title', 'response')) for
+                    thread in Thread.objects.all()
+                ]
+            else:
+                answers = [{
+                    'title': 'Whoops!',
+                    'response': 'Looks there isn\'t anything yet!'
+                }]
+
+        ret['answers'] = answers
         return JsonResponse(ret)
