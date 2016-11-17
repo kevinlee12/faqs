@@ -75,3 +75,22 @@ class ThreadTestCase(TestCase):
              {'title': 'What is the best animal to walk?', 'response': 'A cat'},
              {'title': 'What serves as the best patrol?', 'response': 'A cat'},
             ])
+
+class EmptyDBThreadTestCase(TestCase):
+    def test_returns_no_thread_message(self):
+        """JSON should include all results when query is None"""
+        c = Client()
+        response = c.get('/search/')
+
+        self.assertEqual(response.json()['answers'],
+            [{'title': 'Whoops!',
+              'response': 'Looks there isn\'t anything yet!'}])
+
+    def test_returns_no_failure_thread_message(self):
+        """JSON should include all results when query is None"""
+        c = Client()
+        response = c.get('/search/nofail')
+
+        self.assertEqual(response.json()['answers'],
+            [{'title': 'Tell the site admin that...',
+              'response': 'the failure threads aren\'t loaded!'}])

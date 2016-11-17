@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # All other third-party apps in alphabetical order
+    'django_nose',
     'markdownx',
 
     # Core app
@@ -139,3 +140,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Django nose settings
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+NOSE_ARGS = ['--exe', '--with-coverage']
