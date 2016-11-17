@@ -5,3 +5,7 @@ machine:
     version: 3.5.1
   services:
     - postgresql
+
+test:
+  post:
+    - bash <(curl -s https://codecov.io/bash)
