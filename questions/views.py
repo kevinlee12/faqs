@@ -31,10 +31,13 @@ class HomeView(TemplateView):
         return render(request, self.template_name)
 
 class SearchHandler(View):
+
+    @classmethod
     def get(self, request, query=None):
         """Returns a json of the search results"""
-        assert type(query) == str or query is None, \
-            'Query must be a string type or None!'
+        if query:
+            assert isinstance(query, str), \
+                'Query must be a string type or None!'
 
         ret = {'answers': []}
         answers = []

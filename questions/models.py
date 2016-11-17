@@ -55,9 +55,11 @@ def validate_only_one_instance(obj):
 class FailureThread(Content):
 
     def title_default():
+        """Returns the default failture thread title."""
         return 'Looks like we couldn\'t find a solution :('
 
     def response_default():
+        """Returns the default failure thread response."""
         return 'Try again with another search term or keep typing'
 
     def clean(self):
