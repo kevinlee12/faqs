@@ -1,4 +1,8 @@
 # FAQ
+[![CircleCI](https://circleci.com/gh/kevinlee12/faqs.svg?style=svg)](https://circleci.com/gh/kevinlee12/faqs)
+[![codecov](https://codecov.io/gh/kevinlee12/faqs/branch/master/graph/badge.svg)](https://codecov.io/gh/kevinlee12/faqs)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6a2d77a0d6f46bb903de8d5a409e325)](https://www.codacy.com/app/kevinlee963/faqs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kevinlee12/faqs&amp;utm_campaign=Badge_Grade)
+
 FAQ is a simple web app that returns answers to a user submitted query.
 
 FAQ is built using Django and ReactJS and powered with Postgres.
