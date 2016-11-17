@@ -1,0 +1,9 @@
+[report]
+include =
+  fyi/*
+  questions/*
+
+omit =
+  __pycache__/*
+  *.pyc
+  */migrations/*
