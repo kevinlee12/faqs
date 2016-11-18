@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.core.exceptions import ValidationError
 from django.test import Client, TestCase
 
 from .models import Thread
@@ -75,6 +76,12 @@ class ThreadTestCase(TestCase):
              {'title': 'What is the best animal to walk?', 'response': 'A cat'},
              {'title': 'What serves as the best patrol?', 'response': 'A cat'},
             ])
+
+    def test_permit_only_one_failure_thread(self):
+        """DB should fail when creating multiple Failure Threads"""
+        with self.assertRaises(ValidationError):
+            fail = FailureThread()
+            fail.clean()
 
 class EmptyDBThreadTestCase(TestCase):
     def test_returns_no_thread_message(self):
