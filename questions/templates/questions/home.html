@@ -3,31 +3,43 @@
 <html>
   <head>
     <title>Search View </title>
-    <!-- ReactJS -->
-    <script src="https://npmcdn.com/react@15.3.0/dist/react-with-addons.min.js"></script>
-    <script src="https://npmcdn.com/react-dom@15.3.0/dist/react-dom.min.js"></script>
-    <script src="https://npmcdn.com/babel-core@5.8.38/browser.min.js"></script>
-
     <!-- jQuery -->
     <script src="http://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
 
-    <!-- Materialize -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <!-- Materialize CSS -->
+    <link href="{% static 'questions/home/css/materialize.min.css' %}" rel="stylesheet">
 
     <!-- Materialize Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Remarkable Markdown Rendering -->
-    <script src="https://npmcdn.com/remarkable@1.6.2/dist/remarkable.min.js"></script>
-
     <!-- Page styling -->
-    <link href="{% static 'questions/home/style.css' %}" rel="stylesheet">
+    <link href="{% static 'questions/home/css/style.css' %}" rel="stylesheet">
     <link href="{% static 'questions/favicon/favicon.ico' %}" rel="icon">
   </head>
   <body>
     <div class="container" id="content"></div>
-    <script src="{% static 'questions/home/app.js' %}" type="text/babel"></script>
-    <noscript>Want to use this website? <a href="http://www.enable-javascript.com/">Turn on JavaScript!</a></noscript>
+    <script src="{% static 'questions/home/bundle.js' %}" type="text/javascript"></script>
+
+    <!-- Note to developers: Everything inside noscript must be hard-coded or loaded from the backend in order for card and its text to be properly rendered.-->
+    <!-- *No* JS Zone! -->
+    <noscript>
+      <div class="container">
+        <div class="row">
+          <div class="col s6">
+            <div class="card deep-orange darken-4">
+              <div class="card-content white-text">
+                <span class="card-title">Oh no, your JavaScript is turned off! :(</span>
+                <div>
+                  FAQ requires JavaScript to be turned on to run.
+                </div>
+              </div>
+              <div class="card-action">
+                <a href="http://www.enable-javascript.com/" target="_blank">Learn how to turn on JavaScript!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </noscript>
   </body>
 </html>
