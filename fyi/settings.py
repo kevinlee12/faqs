@@ -143,4 +143,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Django nose settings
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-NOSE_ARGS = ['--exe', '--with-coverage']
+NOSE_ARGS = ['--exe']
+
+# Apache Solr settings, these will need to be tuned accordingly.
+SOLR_URL = 'http://search:8983/solr'
+# Note to developers: Please ensure that the core exists before searching in
+# the Solr instance.
+SOLR_CORE = 'search1'
+SOLR_SEARCH_URL = '{0}/{1}'.format(SOLR_URL, SOLR_CORE)

@@ -1,0 +1,41 @@
+{
+  "name": "faq-home",
+  "version": "1.0.0",
+  "description": "FAQ Homepage",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -t [ babelify ] main.js -o bundle.js",
+    "postinstall": "cp node_modules/materialize-css/js/date_picker/picker.js node_modules/materialize-css/bin; cp node_modules/materialize-css/dist/css/materialize.min.css ./materialize.min.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinlee12/faqs.git"
+  },
+  "keywords": [
+    "FAQ"
+  ],
+  "author": "Kevin Lee",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kevinlee12/faqs/issues"
+  },
+  "homepage": "https://github.com/kevinlee12/faqs#readme",
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "devDependencies": {
+    "babel-plugin-inferno": "^1.5.0",
+    "browserify": "^13.3.0",
+    "inferno-devtools": "^1.1.1"
+  },
+  "dependencies": {
+    "inferno": "^1.1.1",
+    "inferno-component": "^1.1.1",
+    "inferno-create-element": "^1.1.1",
+    "materialize-css": "^0.97.8",
+    "remarkable": "^1.7.1"
+  }
+}

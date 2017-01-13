@@ -9,3 +9,7 @@ machine:
 test:
   post:
     - bash <(curl -s https://codecov.io/bash)
+
+notify:
+  webhooks:
+    - url: https://webhooks.gitter.im/e/d8a123c3b097bef23e3a

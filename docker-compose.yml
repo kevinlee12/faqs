@@ -2,13 +2,20 @@ version: '2'
 services:
   db:
     image: postgres
+  search:
+    image: solr
+    volumes:
+      - ./solr/:/opt/solr/solr/
+    ports:
+      - "8983:8983"
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/app/user/
+      - .:/code
     ports:
       - "8000:8000"
     depends_on:
       - db
-    entrypoint: dockerize -wait tcp://db:5432
+      - search
+    entrypoint: dockerize -wait tcp://db:5432 -wait http://search:8983

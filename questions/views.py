@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.contrib.postgres.search import TrigramSimilarity
+import json
+import requests
+
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils.html import escape, format_html
 from django.views import View
 from django.views.generic import TemplateView
 
-from django.forms.models import model_to_dict
-
-from .models import Thread, FailureThread
+from fyi.settings import SOLR_SEARCH_URL
 
 class HomeView(TemplateView):
 
@@ -31,47 +32,46 @@ class HomeView(TemplateView):
         return render(request, self.template_name)
 
 class SearchHandler(View):
+    """Handles all search requests."""
 
-    @classmethod
-    def get(self, request, query=None):
-        """Returns a json of the search results"""
+    def get(self, request):
+        """
+        Handles GET requests for search. If no query is provided, all search
+        queries will be returned.
+        """
+        query = escape(request.GET.get('query', None)).strip()
+        start = escape(request.GET.get('start', 0))
+
+        url = format_html('{0}/select', SOLR_SEARCH_URL)
         if query:
-            assert isinstance(query, str), \
-                'Query must be a string type or None!'
-
-        ret = {'answers': []}
-        answers = []
-
-        if query:
-            answers = [
-                model_to_dict(thread, fields=('title', 'response')) for thread
-                in Thread.objects.annotate(similarity=\
-                    TrigramSimilarity('response', query) +
-                    TrigramSimilarity('title', query),
-                ).filter(similarity__gt=0.09).order_by('-similarity')]
-
-            if len(answers) == 0:
-                if FailureThread.objects.count():
-                    answers = [
-                        model_to_dict(FailureThread.objects.get(pk=1),
-                                      fields=('title', 'response'))
-                    ]
-                else:
-                    answers = [{
-                        'title': 'Tell the site admin that...',
-                        'response': 'the failure threads aren\'t loaded!'
-                    }]
+            params = {
+                'q': query,
+                'defType': 'edismax',
+                'ps': '10',
+                'start': start,
+                'tie': '0.1',
+                'wt':'json'
+            }
         else:
-            if Thread.objects.count():
-                answers = [
-                    model_to_dict(thread, fields=('title', 'response')) for
-                    thread in Thread.objects.all()
-                ]
-            else:
-                answers = [{
-                    'title': 'Whoops!',
-                    'response': 'Looks there isn\'t anything yet!'
-                }]
+            # Return all threads if no query is given
+            params = {
+                'q': '*',
+                'start': start,
+                'wt': 'json'
+            }
 
-        ret['answers'] = answers
-        return JsonResponse(ret)
+        response = requests.get(url, params)
+
+        json_reponse = {}
+        if response.status_code == requests.codes.ok:
+            json_reponse = json.loads(response.text)['response']
+        else:
+            raise requests.RequestException('Solr errored!')
+
+        # Empty query case.
+        if json_reponse['numFound'] < 1:
+            json_reponse['docs'].append({
+                'title': 'Oops couldn\'t find anything',
+                'response': 'Keep on typing, we may find something interesting'
+            })
+        return JsonResponse(json_reponse)

@@ -5,7 +5,7 @@
 
 FAQ is a simple web app that returns answers to a user submitted query.
 
-FAQ is built using Django and ReactJS and powered with Postgres.
+FAQ is built using Django and InfernoJS and powered by Apache Solr.
 
 ## Installation
 FAQ is developed with Docker Compose with the idea that it will be easily hosted on a variety of cloud providers.
@@ -17,9 +17,6 @@ FAQ is developed with Docker Compose with the idea that it will be easily hosted
 docker-compose build
 docker-compose up
 ```
-4. Close the docker containers by `Ctrl+C`.
-5. Run `docker-compose run web python manage.py migrate`
-5. Run `docker-compose run web python manage.py loaddata initial_data` (this is to load the failure thread first).
 
 ## Notes
 This application is still in very much a work in progress. If you would like to make a PR, please do! Any assistance would be very much appreciated!

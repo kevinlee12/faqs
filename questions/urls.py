@@ -20,8 +20,6 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.HomeView.as_view(), name='home'),
-    url(r'^search/(?P<query>\w+)', views.SearchHandler.as_view(),
-        name='search_handler'),
-    url(r'^search/', views.SearchHandler.as_view(),
+    url(r'^search', views.SearchHandler.as_view(),
         name='search_handler'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
