@@ -109,8 +109,6 @@ var FAQContainer = (0, _infernoCreateClass2.default)({
     this.fetchAnswers();
   },
   fetchMoreAnswers: function fetchMoreAnswers() {
-    console.log('fired');
-    console.log(this.state.results.length);
     var payload = {
       query: this.state.query,
       start: this.state.results.length
@@ -118,7 +116,6 @@ var FAQContainer = (0, _infernoCreateClass2.default)({
 
     $.get(SEARCH_URL, payload, function (data) {
       var newResults = this.state.results.concat(data.docs);
-      console.log(newResults);
       this.setState({
         results: newResults
       });
