@@ -25,7 +25,7 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
-// Copyright 2016 FAQ Authors
+// Copyright 2017 FAQ Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
